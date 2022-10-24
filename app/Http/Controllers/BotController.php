@@ -33,11 +33,26 @@ class BotController extends Controller
             $nombre = $beneficiaria->nombre;
             $apellido = $beneficiaria->apellido;
             return response()->json([
-                'respuesta' => "$nombre $apellido. Tus datos son correctos?",
+                'mensaje' => "$nombre $apellido. Tus datos son correctos?",
             ]);
         } else {
             return response()->json([
-                'respuesta' => "No tenemos registro de ese DNI. Escribilo nuevamente."
+                'mensaje' => "No tenemos registro de ese DNI. Escribilo nuevamente."
+            ]);
+        }
+    }
+
+    public function comprobarCVF(Request $request)
+    {
+        $beneficiaria = Beneficiaria::find($request->dni);
+        $tieneCVF = $beneficiaria->tiene_cvf;
+        if ($tieneCVF) {            
+            return response()->json([
+                'mensaje' => 'Posee CVF'
+            ]);
+        } else {
+            return response()->json([
+                'mensaje' => "No posee CVF."
             ]);
         }
     }

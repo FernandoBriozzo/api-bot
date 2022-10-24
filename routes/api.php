@@ -20,3 +20,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/login', [BotController::class, 'login']);
 Route::post('/obtener-datos-dni', [BotController::class, 'obtenerDatosDNI'])->middleware('auth:sanctum');
+Route::post('/comprobar-cvf', [BotController::class, 'comprobarCVF'])->middleware('auth:sanctum');
