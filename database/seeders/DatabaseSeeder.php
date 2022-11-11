@@ -23,6 +23,8 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             UserSeeder::class,
+            CVFSeeder::class,
+            PiezaSeeder::class
         ]);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Beneficiaria;
+use App\Models\CVF;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -55,5 +56,54 @@ class BotController extends Controller
                 'mensaje' => "No posee CVF."
             ]);
         }
+    }
+
+    public function obtenerDatosCVF (Request $request) {
+        $usuario = CVF::find($request->dni);
+        if ($usuario == null) {
+            return response()->json([], 204);
+        }
+        $tieneCVF = $usuario->tiene_cvf;
+        $nombre = $usuario->nombre;
+        $apellido = $usuario->apellido;
+        return response()->json([
+            'nombre' => $nombre,
+            'apellido' => $apellido,
+            'tiene_cvf' => (bool)$tieneCVF
+        ], 200);
+    }
+
+    public function dniConCvf (Request $request) {
+        $usuario = CVF::find($request->dni);
+        if(!$usuario->tiene_cvf) {
+            return response()->json([
+                'message' => 'Esta persona no posee CVF'
+            ], 200);
+        }
+        $solicitudF02 = $usuario->f02;
+        $solicitudF03 = $usuario->f03;
+        $solicitudF04 = $usuario->f04;
+        $solicitudF05 = $usuario->f05;
+        return response()->json([
+            'solicitud_F02' => $solicitudF02,
+            'solicitud_F03' => $solicitudF03,
+            'solicitud_F04' => $solicitudF04,
+            'solicitud_F05' => $solicitudF05
+        ], 200);
+    }
+
+    public function dniSinCvf (Request $request) {
+        $usuario = CVF::find($request->dni);
+        if($usuario->tiene_cvf) {
+            return response()->json([
+                'message' => 'Esta persona posee CVF'
+            ], 200);
+        }
+        $solicitudF01 = $usuario->f01;
+        $encuesta = (bool)$usuario->encuesta_realizada;
+        return response()->json([
+            'solicitud_F01' => $solicitudF01,
+            'encuesta_realizada' => $encuesta
+        ], 200);
     }
 }
