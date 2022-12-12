@@ -5,11 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Beneficiaria extends Model
+class Encuesta extends Model
 {
     use HasFactory;
 
-    protected $table = 'beneficiarias';
-    protected $primaryKey = "dni";
+    protected $table = 'encuestas.bot_encuestas';
+    protected $primaryKey = 'dni';
     protected $guarded = ['*'];
+    
 }

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Beneficiaria;
 use App\Models\CVF;
 use App\Models\User;
+use App\Models\Reclamo;
+use App\Models\Encuesta;
+
 use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Http\Request;
@@ -26,84 +28,51 @@ class BotController extends Controller
         ]);
     }
 
-    public function obtenerDatosDNI(Request $request)
+    public function obtenerDatosCVF(Request $request)
     {
-        //Todo: devolver las distintas posiblidades de busqueda de dni segun el diagrama
-        $beneficiaria = Beneficiaria::find($request->dni);
-        if (isset($beneficiaria)) {
-            $nombre = $beneficiaria->nombre;
-            $apellido = $beneficiaria->apellido;
+        if ($request->dni == null) {
             return response()->json([
-                'mensaje' => "$nombre $apellido. Tus datos son correctos?",
-            ]);
-        } else {
-            return response()->json([
-                'mensaje' => "No tenemos registro de ese DNI. Escribilo nuevamente."
-            ]);
+                'error' => 'El campo dni es obligatorio'
+            ], 400);
         }
-    }
-
-    public function comprobarCVF(Request $request)
-    {
-        $beneficiaria = Beneficiaria::find($request->dni);
-        $tieneCVF = $beneficiaria->tiene_cvf;
-        if ($tieneCVF) {            
-            return response()->json([
-                'mensaje' => 'Posee CVF'
-            ]);
-        } else {
-            return response()->json([
-                'mensaje' => "No posee CVF."
-            ]);
-        }
-    }
-
-    public function obtenerDatosCVF (Request $request) {
         $usuario = CVF::find($request->dni);
         if ($usuario == null) {
             return response()->json([], 204);
         }
-        $tieneCVF = $usuario->tiene_cvf;
-        $nombre = $usuario->nombre;
-        $apellido = $usuario->apellido;
+        $nombre = $usuario->apellido_nombre;
+        $cvf = $usuario->nro_certificado;
         return response()->json([
-            'nombre' => $nombre,
-            'apellido' => $apellido,
-            'tiene_cvf' => (bool)$tieneCVF
+            'Apellido y nombre:' => $nombre,
+            'Número de certificado:' => $cvf
+        ], 200);
+    }
+        
+    public function dniConCvf(Request $request)
+    {
+        if ($request->dni == null) {
+            return response()->json([
+                'error' => 'El campo dni es obligatorio'
+            ], 400);
+        }
+        $usuario = Reclamo::find($request->dni);
+        $encuesta = Encuesta::find($request->dni);
+        return response()->json([
+            'F01' => $usuario != null? $usuario->f01(): "No posee F01 pendiente.",
+            'tiene_encuesta' => $encuesta == null ? false: true
         ], 200);
     }
 
-    public function dniConCvf (Request $request) {
-        $usuario = CVF::find($request->dni);
-        if(!$usuario->tiene_cvf) {
+    public function dniSinCvf(Request $request)
+    {
+        if ($request->dni == null) {
             return response()->json([
-                'message' => 'Esta persona no posee CVF'
-            ], 200);
+                'error' => 'El campo dni es obligatorio'
+            ], 400);
         }
-        $solicitudF02 = $usuario->f02;
-        $solicitudF03 = $usuario->f03;
-        $solicitudF04 = $usuario->f04;
-        $solicitudF05 = $usuario->f05;
+        $reclamo = Reclamo::find($request->dni);
+        $respuesta = $reclamo->reclamos();
         return response()->json([
-            'solicitud_F02' => $solicitudF02,
-            'solicitud_F03' => $solicitudF03,
-            'solicitud_F04' => $solicitudF04,
-            'solicitud_F05' => $solicitudF05
-        ], 200);
-    }
-
-    public function dniSinCvf (Request $request) {
-        $usuario = CVF::find($request->dni);
-        if($usuario->tiene_cvf) {
-            return response()->json([
-                'message' => 'Esta persona posee CVF'
-            ], 200);
-        }
-        $solicitudF01 = $usuario->f01;
-        $encuesta = (bool)$usuario->encuesta_realizada;
-        return response()->json([
-            'solicitud_F01' => $solicitudF01,
-            'encuesta_realizada' => $encuesta
+            'reclamos' => $respuesta
         ], 200);
     }
 }
