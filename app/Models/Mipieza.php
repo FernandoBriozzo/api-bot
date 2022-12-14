@@ -9,7 +9,7 @@ class Mipieza extends Model
 {
     use HasFactory;
 
-    protected $table = 'mi_pieza.bot_mipieza';
+    protected $table = 'bot_mipieza';
     protected $primaryKey = 'dni';
     protected $guarded = ['*'];
 

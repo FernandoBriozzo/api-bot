@@ -16,7 +16,7 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('bot_usuarios.users')->insert([
+        DB::table('users')->insert([
             'name' => "UsuarioBot01",
             'password' => Hash::make('p3258T974E')
         ]);

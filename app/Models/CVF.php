@@ -9,7 +9,7 @@ class CVF extends Model
 {
     use HasFactory;
 
-    protected $table = 'anses.bot_cvf';
+    protected $table = 'bot_cvf';
     protected $primaryKey = "dni";
     protected $guarded = ['*'];
 }

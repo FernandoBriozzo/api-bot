@@ -9,7 +9,7 @@ class Reclamo extends Model
 {
     use HasFactory;
 
-    protected $table = 'reclamos.bot_reclamos';
+    protected $table = 'bot_reclamos';
     protected $primaryKey = "dni";
     protected $guarded = ['*'];
 

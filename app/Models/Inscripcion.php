@@ -9,7 +9,7 @@ class Inscripcion extends Model
 {
     use HasFactory;
 
-    protected $table = 'mi_pieza.bot_inscripcion';
+    protected $table = 'bot_inscripcion';
     protected $guarded = ['*'];
 
     public static function estado() {

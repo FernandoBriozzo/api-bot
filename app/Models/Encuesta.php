@@ -9,7 +9,7 @@ class Encuesta extends Model
 {
     use HasFactory;
 
-    protected $table = 'encuestas.bot_encuestas';
+    protected $table = 'bot_encuestas';
     protected $primaryKey = 'dni';
     protected $guarded = ['*'];
     
