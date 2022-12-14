@@ -42,8 +42,8 @@ class BotController extends Controller
         $nombre = $usuario->apellido_nombre;
         $cvf = $usuario->nro_certificado;
         return response()->json([
-            'Apellido y nombre:' => $nombre,
-            'Número de certificado:' => $cvf
+            'nombre_apellido:' => $nombre,
+            'numero_certificado:' => $cvf
         ], 200);
     }
         

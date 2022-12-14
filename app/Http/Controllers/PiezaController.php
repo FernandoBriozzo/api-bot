@@ -30,7 +30,7 @@ class PiezaController extends Controller
     public function checkInscripcionAbierta()
     {
         return response()->json([
-            'estado-inscripcion' => Inscripcion::estado()
+            'estado_inscripcion' => Inscripcion::estado()
         ], 200);
     }
 
@@ -98,8 +98,10 @@ class PiezaController extends Controller
                 'error' => "El campo numero_tramite es obligatorio"
             ], 400);
         }
-        $numeroTramite = Mipieza::select('nro_tramite')->where('dni', $request->dni)->first()->nro_tramite;
-        if ($numeroTramite == $request->numero_tramite) {
+        $numeroTramite = Mipieza::select('nro_tramite')->where('dni', $request->dni)->first();
+        if ($numeroTramite == null) {
+            $respuesta = "Incorrecto";
+        } else if (str_pad($numeroTramite->nro_tramite, 11, 0, STR_PAD_LEFT) == str_pad($request->numero_tramite, 11, 0, STR_PAD_LEFT)) {
             $respuesta = "Correcto";
         } else $respuesta = "Incorrecto";
         return response()->json([
