@@ -47,7 +47,7 @@ class BotController extends Controller
         ], 200);
     }
         
-    public function dniConCvf(Request $request)
+    public function dniSinCvf(Request $request)
     {
         if ($request->dni == null) {
             return response()->json([
@@ -62,7 +62,7 @@ class BotController extends Controller
         ], 200);
     }
 
-    public function dniSinCvf(Request $request)
+    public function dniConCvf(Request $request)
     {
         if ($request->dni == null) {
             return response()->json([

@@ -2,7 +2,13 @@
 
 namespace App\Exceptions;
 
+use Exception;
+use GuzzleHttp\Exception\ServerException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Psy\Exception\FatalErrorException;
+use Symfony\Component\CssSelector\Exception\InternalErrorException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -46,5 +52,13 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+        /* 
+        $this->renderable(function (Exception $exception, $request) {
+            if ($exception instanceof NotFoundHttpException) {
+                return response()->json(['message' => 'No encontrado!'], 404);
+            }
+        });
+        */
     }
+    
 }

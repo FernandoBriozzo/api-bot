@@ -4,7 +4,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BotController;
 use App\Http\Controllers\PiezaController;
-use Database\Seeders\PiezaSeeder;
 
 /*
 |--------------------------------------------------------------------------
