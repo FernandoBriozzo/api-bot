@@ -30,7 +30,7 @@ Route::group(['prefix' => 'mi-pieza', 'middleware' => 'auth:sanctum'], function(
     Route::post('/datos-persona', [PiezaController::class, 'obtenerDatosMiPieza']);
     Route::post('/estado-inscripcion', [PiezaController::class, 'checkInscripcionAbierta']);
     Route::post('/personas-certificado', [PiezaController::class, 'obtenerPersonaConCVF']);
-    Route::post('/estado-baja', [PiezaController::class, 'estadoBaja']);
+    Route::post('/estado-persona', [PiezaController::class, 'estadoPersona']);
     Route::post('/numeros-tramite', [PiezaController::class, 'numeroTramite']);
     Route::post('/depositos-tiempo', [PiezaController::class, 'cuandoDepositan']);
     Route::post('/depositos-cuenta', [PiezaController::class, 'dondeDepositan']);

@@ -45,7 +45,7 @@ class PiezaController extends Controller
         ], 200);
     }
 
-    public function estadoBaja(Request $request)
+    public function estadoPersona(Request $request)
     {
         $respuesta = MIpieza::select('tipo_persona', 'baja')->where('dni', $request->dni)->first();
         $tipoPersona = $respuesta->tipo_persona;
