@@ -40,8 +40,17 @@ class PiezaController extends Controller
         if ($personas == null) {
             return response()->json([], 204);
         }
+        $personasDatos = [];
+        foreach ($personas as $p) {
+            $personasDatos[] = array([
+                "nombre" => $p->nombre,
+                "apellido" => $p->apellido,
+                "dni" => $p->dni
+
+            ]);
+        }
         return response()->json([
-            'personas:' => $personas
+            'personas:' => $personasDatos
         ], 200);
     }
 
@@ -283,7 +292,7 @@ class PiezaController extends Controller
         } else if ($etapa->etapa_id == "ID_11") {
             $respuesta = "Fin de obra";
         } else {
-            $respuesta = "Inicio validación obra o anterio";
+            $respuesta = "Inicio validación obra o anterior";
         }
 
         return response()->json([
