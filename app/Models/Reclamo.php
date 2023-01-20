@@ -24,7 +24,7 @@ class Reclamo extends Model
             if (in_array($estado->id_estado, $f01Pendiente)) {
                 $respuesta = "Pendiente.";
             } else if (in_array($estado->id_estado, $f01ProxEncuesta)) {
-                $respuesta = "Próximo de encuesta.";
+                $respuesta = "Proximo de encuesta.";
             }
         }
         return $respuesta;

@@ -27,7 +27,7 @@ class PiezaSeeder extends Seeder
             'tiene_cvf' => true,
             'cvf' => 'cvf9283',
             'nro_tramite_dni' => '98767656432',
-            'estado_etapa' => 'Ganadores/Inicio Confirmación',
+            'estado_etapa' => 'Ganadores/Inicio Confirmacion',
             'de_baja' => true
         ]);
     }

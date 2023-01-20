@@ -21,9 +21,11 @@ class PiezaController extends Controller
         }
         $nombre = $usuario->nombre;
         $apellido = $usuario->apellido;
+        $certificado = $usuario->nro_certificado;
         return response()->json([
             'apellido' => $apellido,
-            'nombre' => $nombre
+            'nombre' => $nombre,
+            'numero_certificado' => $certificado
         ], 200);
     }
 
@@ -68,7 +70,7 @@ class PiezaController extends Controller
         if ($tipoPersona == null) {
             switch ($baja) {
                 case "G1":
-                    $mensaje = "Baja Mi Pieza - No confirmación de subsidio";
+                    $mensaje = "Baja Mi Pieza - No confirmacion de subsidio";
                     break;
                 case "G3":
                     $mensaje = "Baja Mi Pieza - Punto GPS fuera de barrio";
@@ -131,13 +133,13 @@ class PiezaController extends Controller
         if (!in_array($pago, ["4", "7"])) {
             switch ($etapa) {
                 case "ID_2":
-                    $respuesta = "Ganadoras/Inicio y Envío Confirmación";
+                    $respuesta = "Ganadoras/Inicio y Envio Confirmacion";
                     break;
                 case "ID_3":
-                    $respuesta = "Ganadoras/Inicio y Envío Confirmación";
+                    $respuesta = "Ganadoras/Inicio y Envio Confirmacion";
                     break;
                 case "ID_4":
-                    $respuesta = "Ganadoras/Inicio y Envío Confirmación";
+                    $respuesta = "Ganadoras/Inicio y Envio Confirmacion";
                     break;
                 case "ID_5":
                     $respuesta = "Transferencia realizada";
@@ -146,7 +148,7 @@ class PiezaController extends Controller
                     $respuesta = "Inicio validación avance";
                     break;
                 case "ID_7":
-                    $respuesta = "Envío validación avance";
+                    $respuesta = "Envio validación avance";
                     break;
                 case "ID_8":
                     $respuesta = "2da transferencia";
@@ -158,13 +160,13 @@ class PiezaController extends Controller
                     $respuesta = "Solicitud validación cuenta";
                     break;
                 case "ID_13":
-                    $respuesta = "Envío validación cuenta";
+                    $respuesta = "Envio validación cuenta";
                     break;
                 case "ID_14":
-                    $respuesta = "Confirmación 1era transferencia";
+                    $respuesta = "Confirmacion 1era transferencia";
                     break;
                 case "ID_15":
-                    $respuesta = "Confirmación 2da transferencia";
+                    $respuesta = "Confirmacion 2da transferencia";
                     break;
             }
         }
@@ -189,9 +191,9 @@ class PiezaController extends Controller
         }
         $etapa = Mipieza::select('etapa_id')->where('dni', $request->dni)->first()->etapa_id;
         if (in_array($etapa, ["ID_2", "ID_3", "ID_4", "ID_12"])) {
-            $respuesta = "Ganadoras/Inicio-Envío Confirmación-Solicitud validación cuenta";
+            $respuesta = "Ganadoras/Inicio-Envio Confirmacion-Solicitud validación cuenta";
         } else {
-            $respuesta = "Envío validación cuenta para adelante";
+            $respuesta = "Envio validación cuenta para adelante";
         }
 
         return response()->json([
@@ -210,9 +212,9 @@ class PiezaController extends Controller
         if (in_array($etapa, ["ID_2", "ID_3", "ID_4", "ID_12", "ID_13"])) {
             $respuesta = "Ganadoras a Envio val cuenta";
         } else if (in_array($etapa, ["ID_5", "ID_14", "ID_6", "ID_7"])) {
-            $respuesta = "1era transferencia a Envío val avance";
+            $respuesta = "1era transferencia a Envio val avance";
         } else {
-            $respuesta = "2da transferencia a Envío val obra";
+            $respuesta = "2da transferencia a Envio val obra";
         }
 
         return response()->json([
@@ -231,7 +233,7 @@ class PiezaController extends Controller
         if ($estado == null || $estado == '1') {
             $respuesta = "No recibió ningún depósito";
         } else if ($estado == '2' || $estado == '5') {
-            $respuesta = "1er o 2do depósito sin confirmación de Anses";
+            $respuesta = "1er o 2do depósito sin confirmacion de Anses";
         } else if ($estado == '3') {
             $respuesta = "1er depósito confirmado por Anses";
         } else if ($estado == '6') {
@@ -288,7 +290,7 @@ class PiezaController extends Controller
 
         $etapa = Mipieza::select('etapa_id')->where('dni', $request->dni)->first();
         if ($etapa->etapa_id == "ID_10") {
-            $respuesta = "Envío validación obra";
+            $respuesta = "Envio validación obra";
         } else if ($etapa->etapa_id == "ID_11") {
             $respuesta = "Fin de obra";
         } else {
@@ -309,7 +311,7 @@ class PiezaController extends Controller
         }
         $etapa = Mipieza::select('etapa_id')->where('dni', $request->dni)->first();
         if (in_array($etapa->etapa_id, ["ID_2", "ID_3", "ID_4", "ID_12", "ID_13"])) {
-            $respuesta = "Envío validación cuenta o anterior";
+            $respuesta = "Envio validación cuenta o anterior";
         } else if (in_array($etapa->etapa_id, ["ID_5", "ID_6", "ID_7", "ID_8", "ID_9", "ID_10", "ID_11", "ID_14", "ID_15"])) {
             $respuesta = "1era transferencia o posterior";
         }
@@ -327,9 +329,9 @@ class PiezaController extends Controller
         }
         $etapa = Mipieza::select('etapa_id')->where('dni', $request->dni)->first()->etapa_id;
         if (in_array($etapa, ["ID_2", "ID_3"])) {
-            $respuesta = "Ganadores/Inicio Confirmación";
+            $respuesta = "Ganadores/Inicio Confirmacion";
         } else {
-            $respuesta = "Envío confirmación para adelante";
+            $respuesta = "Envio confirmacion para adelante";
         }
 
         return response()->json([
