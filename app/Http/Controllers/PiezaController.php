@@ -38,7 +38,7 @@ class PiezaController extends Controller
 
     public function obtenerPersonaConCVF(Request $request)
     {
-        $personas = Mipieza::where('nro_certificado', $request->certificado)->get(); //todo cambiar esto al modelo
+        $personas = Mipieza::where('nro_certificado', $request->certificado)->get();
         if ($personas == null) {
             return response()->json([], 204);
         }
@@ -58,6 +58,18 @@ class PiezaController extends Controller
 
     public function estadoPersona(Request $request)
     {
+        if ($request->dni == null) {
+            return response()->json([
+                'error' => 'El campo dni es obligatorio'
+            ], 400);
+        }
+
+        if (Mipieza::find($request->dni) == null) {
+            return response()->json([
+                'respuesta' => 'DNI no encontrado'
+            ], 200);
+        }
+
         $respuesta = MIpieza::select('tipo_persona', 'baja')->where('dni', $request->dni)->first();
         $tipoPersona = $respuesta->tipo_persona;
         $baja = $respuesta->baja;
@@ -93,7 +105,7 @@ class PiezaController extends Controller
             }
         }
         return response()->json([
-            'respuesta:' => $mensaje
+            'respuesta' => $mensaje
         ], 200);
     }
 
