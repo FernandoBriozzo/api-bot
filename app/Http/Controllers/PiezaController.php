@@ -188,7 +188,7 @@ class PiezaController extends Controller
                     $respuesta = "Confirmacion 2da transferencia";
                     break;
                 case "":
-                    $respuesta = "Sin datos de estapa.";
+                    $respuesta = "Sin datos de etapa.";
                     break;
             }
         }
