@@ -70,6 +70,11 @@ class BotController extends Controller
             ], 400);
         }
         $reclamo = Reclamo::find($request->dni);
+        if ($reclamo == null) {
+            return response()->json([
+                'respuesta' => 'DNI no corresponde'
+            ], 200);
+        }
         $respuesta = $reclamo->reclamos();
         return response()->json([
             'reclamos' => $respuesta

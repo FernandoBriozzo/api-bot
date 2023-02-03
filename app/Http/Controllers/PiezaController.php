@@ -139,6 +139,13 @@ class PiezaController extends Controller
                 'error' => 'El campo dni es obligatorio'
             ], 400);
         }
+        
+        if (Mipieza::find($request->dni) == null) {
+            return response()->json([
+                'respuesta' => 'DNI no encontrado'
+            ], 200);
+        }
+
         $estado = Mipieza::select('etapa_id', 'id_estado_pago')->where('dni', $request->dni)->first();
         $etapa = $estado->etapa_id;
         $pago = $estado->id_estado_pago;
@@ -220,6 +227,13 @@ class PiezaController extends Controller
                 'error' => 'El campo dni es obligatorio'
             ], 400);
         }
+
+        if (Mipieza::find($request->dni) == null) {
+            return response()->json([
+                'respuesta' => 'DNI no encontrado'
+            ], 200);
+        }
+
         $etapa = Mipieza::select('etapa_id')->where('dni', $request->dni)->first()->etapa_id;
         if (in_array($etapa, ["ID_2", "ID_3", "ID_4", "ID_12", "ID_13"])) {
             $respuesta = "Ganadoras a Envio val cuenta";
@@ -241,8 +255,15 @@ class PiezaController extends Controller
                 'error' => 'El campo dni es obligatorio'
             ], 400);
         }
+
+        if (Mipieza::find($request->dni) == null) {
+            return response()->json([
+                'respuesta' => 'DNI no encontrado'
+            ], 200);
+        }
+
         $estado = Mipieza::select('id_estado_pago')->where('dni', $request->dni)->first()->id_estado_pago;
-        if ($estado == null || $estado == '1') {
+        if ($estado == null || $estado == '1' || $estado == '8' || $estado == '9' || $estado == '10') {
             $respuesta = "No recibió ningún depósito";
         } else if ($estado == '2' || $estado == '5') {
             $respuesta = "1er o 2do depósito sin confirmacion de Anses";
@@ -266,6 +287,13 @@ class PiezaController extends Controller
                 'error' => 'El campo dni es obligatorio'
             ], 400);
         }
+
+        if (Mipieza::find($request->dni) == null) {
+            return response()->json([
+                'respuesta' => 'DNI no encontrado'
+            ], 200);
+        }
+        
         $estado = Mipieza::select('id_estado_pago')->where('dni', $request->dni)->first()->id_estado_pago;
         switch ($estado) {
             case '2':
@@ -300,6 +328,12 @@ class PiezaController extends Controller
             ], 400);
         }
 
+        if (Mipieza::find($request->dni) == null) {
+            return response()->json([
+                'respuesta' => 'DNI no encontrado'
+            ], 200);
+        }
+
         $etapa = Mipieza::select('etapa_id')->where('dni', $request->dni)->first();
         if ($etapa->etapa_id == "ID_10") {
             $respuesta = "Envio validación obra";
@@ -321,6 +355,13 @@ class PiezaController extends Controller
                 'error' => 'El campo dni es obligatorio'
             ], 400);
         }
+
+        if (Mipieza::find($request->dni) == null) {
+            return response()->json([
+                'respuesta' => 'DNI no encontrado'
+            ], 200);
+        }
+
         $etapa = Mipieza::select('etapa_id')->where('dni', $request->dni)->first();
         if (in_array($etapa->etapa_id, ["ID_2", "ID_3", "ID_4", "ID_12", "ID_13"])) {
             $respuesta = "Envio validación cuenta o anterior";
@@ -339,6 +380,13 @@ class PiezaController extends Controller
                 'error' => 'El campo dni es obligatorio'
             ], 400);
         }
+
+        if (Mipieza::find($request->dni) == null) {
+            return response()->json([
+                'respuesta' => 'DNI no encontrado'
+            ], 200);
+        }
+
         $etapa = Mipieza::select('etapa_id')->where('dni', $request->dni)->first()->etapa_id;
         if (in_array($etapa, ["ID_2", "ID_3"])) {
             $respuesta = "Ganadores/Inicio Confirmacion";
