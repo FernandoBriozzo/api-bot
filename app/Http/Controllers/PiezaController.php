@@ -187,6 +187,9 @@ class PiezaController extends Controller
                 case "ID_15":
                     $respuesta = "Confirmacion 2da transferencia";
                     break;
+                case "":
+                    $respuesta = "Sin datos de estapa.";
+                    break;
             }
         }
         if ($pago == '4') {
@@ -367,7 +370,7 @@ class PiezaController extends Controller
             $respuesta = "Envio validación cuenta o anterior";
         } else if (in_array($etapa->etapa_id, ["ID_5", "ID_6", "ID_7", "ID_8", "ID_9", "ID_10", "ID_11", "ID_14", "ID_15"])) {
             $respuesta = "1era transferencia o posterior";
-        }
+        } else $respuesta = "Sin datos de etapa.";
         return response()->json([
             'respuesta' => $respuesta
         ], 200);
