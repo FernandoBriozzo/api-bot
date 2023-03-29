@@ -139,7 +139,7 @@ class PiezaController extends Controller
                 'error' => 'El campo dni es obligatorio'
             ], 400);
         }
-        
+
         if (Mipieza::find($request->dni) == null) {
             return response()->json([
                 'respuesta' => 'DNI no encontrado'
@@ -174,6 +174,12 @@ class PiezaController extends Controller
                     break;
                 case "ID_9":
                     $respuesta = "Inicio validación fin de obra";
+                    break;
+                case "ID_10":
+                    $respuesta = "Envío validación fin de obra";
+                    break;
+                case "ID_11":
+                    $respuesta = "Fin de obra";
                     break;
                 case "ID_12":
                     $respuesta = "Solicitud validación cuenta";
@@ -296,7 +302,7 @@ class PiezaController extends Controller
                 'respuesta' => 'DNI no encontrado'
             ], 200);
         }
-        
+
         $estado = Mipieza::select('id_estado_pago')->where('dni', $request->dni)->first()->id_estado_pago;
         switch ($estado) {
             case '2':
