@@ -74,7 +74,7 @@ return [
             'charset' => 'utf8',
             'prefix' => '',
             'prefix_indexes' => true,
-            'search_path' => 'bot_usuarios',
+            'search_path' => 'bot',
             'sslmode' => 'prefer',
         ],
 
