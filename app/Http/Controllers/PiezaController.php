@@ -272,16 +272,28 @@ class PiezaController extends Controller
         }
 
         $estado = Mipieza::select('id_estado_pago')->where('dni', $request->dni)->first()->id_estado_pago;
-        if ($estado == null || $estado == '1' || $estado == '8' || $estado == '9' || $estado == '10') {
-            $respuesta = "No recibió ningún depósito";
-        } else if ($estado == '2' || $estado == '5') {
-            $respuesta = "1er o 2do depósito sin confirmacion de Anses";
-        } else if ($estado == '3') {
-            $respuesta = "1er depósito confirmado por Anses";
-        } else if ($estado == '6') {
-            $respuesta = "2do depósito confirmado por Anses";
-        } else if ($estado == '4' || $estado == '7') {
-            $respuesta = "Rechazo de pago confirmado por Anses";
+        switch($estado) {
+            case null:
+            case "1":
+                $respuesta = "No recibió ningún depósito";
+                break;
+            case "2":
+            case "5":
+                $respuesta = "1er o 2do depósito sin confirmacion de Anses";
+                break;
+            case "3":
+                $respuesta = "1er depósito confirmado por Anses";
+                break;
+            case "6":
+                $respuesta = "2do depósito confirmado por Anses";
+                break;
+            case "4":
+            case "7":
+            case "8":
+            case "9":
+            case "10":
+                $respuesta = "Rechazo de pago confirmado por Anses";
+                break;
         }
 
         return response()->json([
@@ -305,27 +317,30 @@ class PiezaController extends Controller
 
         $estado = Mipieza::select('id_estado_pago')->where('dni', $request->dni)->first()->id_estado_pago;
         switch ($estado) {
-            case '2':
-                $respuesta = "";
+            case "2":
+                $respuesta = "1er depósito sin confirmación de Anses";
                 break;
-            case '3':
-                $respuesta = "";
+            case "4":
+            case "7":
+            case "8":
+            case "9":
+            case "10":
+                $respuesta = "Rechazo de pago confirmado por Anses";
                 break;
-            case '4':
-                $respuesta = "";
+            case "3":
+                $respuesta = "1er depósito confirmado por Anses";
                 break;
             case '5':
-                $respuesta = "";
+                $respuesta = "2do depósito sin confirmación de Anses";
                 break;
             case '6':
-                $respuesta = "";
+                $respuesta = "2do desembolso confirmado por Anses";
                 break;
-            case '7':
-                $respuesta = "";
-                break;
+            default:
+                $respuesta = "Sin información";
         }
         return response()->json([
-            'pago_estado' => $estado
+            'respuesta' => $respuesta
         ], 200);
     }
 
