@@ -15,11 +15,12 @@ class Inscripcion extends Model
     public static function estado() {
         $inscripcion = (new static)->first();
         $hoy = date('Y-m-d H:i:s');
-        $inscripcion->fecha_hasta == null ? $fecha_hasta = $hoy: $fecha_hasta = $inscripcion->fecha_hasta;
-        if ($inscripcion == null ||  $fecha_hasta < $hoy) {
-            return "Cerrada";
-        } else {
+        if (!$inscripcion == null) {
+            $inscripcion->fecha_hasta == null ? $fecha_hasta = $hoy: $fecha_hasta = $inscripcion->fecha_hasta;
+            if ($fecha_hasta >= $hoy)
             return "Abierta";
+        } else {
+            return "Cerrada";
         }
     }
 }
