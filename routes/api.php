@@ -16,17 +16,17 @@ use App\Http\Controllers\PiezaController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+Route::middleware('auth:sanctum', 'ability:bot,otrahabilidad')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::group(['prefix' => 'cvf', 'middleware' => 'auth:sanctum'], function(){
+Route::group(['prefix' => 'cvf', 'middleware' => ['auth:sanctum', 'ability:bot']], function(){
     Route::post('/datos-persona', [BotController::class, 'obtenerDatosCVF']);
     Route::post('/dni-con-cvf', [BotController::class, 'dniConCvf']);
     Route::post('/dni-sin-cvf', [BotController::class, 'dniSinCvf']);
 });
 
-Route::group(['prefix' => 'mi-pieza', 'middleware' => 'auth:sanctum'], function(){
+Route::group(['prefix' => 'mi-pieza', 'middleware' => ['auth:sanctum', 'ability:bot']], function(){
     Route::post('/datos-persona', [PiezaController::class, 'obtenerDatosMiPieza']);
     Route::post('/estado-inscripcion', [PiezaController::class, 'checkInscripcionAbierta']);
     Route::post('/personas-certificado', [PiezaController::class, 'obtenerPersonaConCVF']);

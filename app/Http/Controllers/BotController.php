@@ -21,7 +21,12 @@ class BotController extends Controller
             ], 401);
         }
         $user = User::where('name', $request['name'])->firstOrFail();
-        $token = $user->createToken('auth_token')->plainTextToken;
+        if ($user['name'] == 'UsuarioBot01') {
+            $scopes = [
+                'bot'
+            ];
+        }
+        $token = $user->createToken('auth_token', $scopes)->plainTextToken;
         return response()->json([
             'access_token' => $token,
             'token_type' => 'Bearer'

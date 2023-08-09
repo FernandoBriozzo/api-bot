@@ -78,6 +78,20 @@ return [
             'sslmode' => 'prefer',
         ],
 
+        'arsat' => [
+            'driver' => 'pgsql',
+            'host' => env('DB_HOST2'),
+            'port' => env('DB_PORT2'),
+            'database' => env('DB_DATABASE2'),
+            'username' => env('DB_USERNAME2'),
+            'password' => env('DB_PASSWORD2'),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'search_path' => 'apis',
+            'sslmode' => 'prefer',
+        ],
+
         'sqlsrv' => [
             'driver' => 'sqlsrv',
             'url' => env('DATABASE_URL'),

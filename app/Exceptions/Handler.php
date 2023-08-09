@@ -60,5 +60,15 @@ class Handler extends ExceptionHandler
         });
         */
     }
+
+    public function render($request, $next, ...$abilities)
+    {
+        foreach ($abilities as $ability) {
+            if ($request->user()->tokenCan($ability)) {
+                return $next($request);
+            }
+        }
+        return response(["error" => "Usuario no autorizado"], 401);
+    }
     
 }
