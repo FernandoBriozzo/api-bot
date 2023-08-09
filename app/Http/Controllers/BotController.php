@@ -25,6 +25,10 @@ class BotController extends Controller
             $scopes = [
                 'bot'
             ];
+        } else if ($user['name'] == 'UsuarioSalta01') {
+            $scopes = [
+                'salta'
+            ];
         }
         $token = $user->createToken('auth_token', $scopes)->plainTextToken;
         return response()->json([
