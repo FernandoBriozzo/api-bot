@@ -10,4 +10,5 @@ class Localidad extends Model
     use HasFactory;
 
     protected $connection = 'arsat';
+    protected $table = 'localidades';
 }

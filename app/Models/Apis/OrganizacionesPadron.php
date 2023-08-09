@@ -10,4 +10,5 @@ class OrganizacionesPadron extends Model
     use HasFactory;
 
     protected $connection = 'arsat';
+    protected $table = 'organizaciones_padron';
 }

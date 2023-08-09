@@ -10,4 +10,5 @@ class NombreCalle extends Model
     use HasFactory;
 
     protected $connection = 'arsat';
+    protected $table = 'nombre_calle';
 }
