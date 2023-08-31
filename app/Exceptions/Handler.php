@@ -10,6 +10,8 @@ use Psy\Exception\FatalErrorException;
 use Symfony\Component\CssSelector\Exception\InternalErrorException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
+use Illuminate\Auth\AuthenticationException;
+use Laravel\Sanctum\Exceptions\MissingAbilityException;
 
 class Handler extends ExceptionHandler
 {
@@ -61,7 +63,7 @@ class Handler extends ExceptionHandler
         */
     }
 
-    public function render($request, $next, ...$abilities)
+    /* public function render($request, $next, ...$abilities)
     {
         foreach ($abilities as $ability) {
             if ($request->user()->tokenCan($ability)) {
@@ -69,6 +71,19 @@ class Handler extends ExceptionHandler
             }
         }
         return response(["error" => "Usuario no autorizado"], 401);
-    }
-    
+    } */
+    /* public function render($request, $next, ...$abilities)
+    {
+        if (! $request->user() || ! $request->user()->currentAccessToken()) {
+            throw new AuthenticationException;
+        }
+
+        foreach ($abilities as $ability) {
+            if ($request->user()->tokenCan($ability)) {
+                return $next($request);
+            }
+        }
+
+        return response(["error" => "Usuario no autorizado"], 401);
+    } */
 }

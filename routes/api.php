@@ -4,6 +4,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BotController;
 use App\Http\Controllers\PiezaController;
+use App\Http\Controllers\BarrioController;
+use App\Http\Controllers\ProvinciaController;
+use App\Http\Controllers\DepartamentoController;
+use App\Http\Controllers\LocalidadController;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,3 +47,32 @@ Route::group(['prefix' => 'mi-pieza', 'middleware' => ['auth:sanctum', 'ability:
 });
 
 Route::post('/login', [BotController::class, 'login']);
+
+Route::group(['prefix' => 'barrios', 'middleware' => ['auth:sanctum', 'ability:salta']], function(){
+    Route::get('/', [BarrioController::class, 'index']);
+    Route::get('/{id}', [BarrioController::class, 'show']);
+    Route::get('/{id}/geom', [BarrioController::class , 'geometria']);
+    Route::get('/{id}/ubicacion', [BarrioController::class, 'ubicacion']);
+});
+
+Route::group(['prefix' => 'provincias', 'middleware' => ['auth:sanctum', 'ability:salta']], function(){
+    Route::get('/', [ProvinciaController::class, 'index']);
+    Route::get('/{id}', [ProvinciaController::class, 'show']);
+    Route::get('/{id}/departamentos', [ProvinciaController::class, 'showDepartamentos']);
+});
+
+Route::group(['prefix' => 'departamentos', 'middleware' => ['auth:sanctum', 'ability:salta']], function(){
+    Route::get('/', [DepartamentoController::class, 'index']);
+    Route::get('/{id}', [DepartamentoController::class, 'show']);
+    Route::get('/{id}/localidades', [DepartamentoController::class, 'showLocalidades']);
+});
+
+Route::group(['prefix' => 'localidades', 'middleware' => ['auth:sanctum', 'ability:salta']], function(){
+    Route::get('/', [LocalidadController::class, 'index']);
+    Route::get('/{id}', [LocalidadController::class, 'show']);
+    Route::get('/{id}/barrios', [LocalidadController::class, 'showBarrios']);
+});
+
+Route::get('/checktokens', function(Request $request){
+    return $request->user()->tokencan('salta');
+})->middleware('auth:sanctum', 'ability:bot,salta');
