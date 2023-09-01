@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Apis\Barrio;
+use App\Models\Apis\Provincia;
+use Illuminate\Support\Facades\DB;
 
 class BarrioController extends Controller
 {
@@ -14,25 +16,36 @@ class BarrioController extends Controller
      */
     public function index()
     {
-        $barrios = Barrio::all();
-        if ($barrios !== null) {
-            $response = [];
-            foreach ($barrios as $barrio) {
-                if (count($response) == 10) break;
-                $response[] = array(
-                    'id-barrio' => $barrio->id_renabap,
-                    'nombre-barrio' => $barrio->nombre_barrio,
-                    'localidad' => $barrio->localidad(),
-                    'departamento' => $barrio->departamento(),
-                    'provincia' => $barrio->provincia()
-                );
-            }
-            return response()->json([
-                $response
-            ], 200);
-        } else {
-            return response()->json([], 204);
-        }
+        $response = [];
+
+        $barrios = DB::connection('arsat')->table('barrios')
+            ->leftJoin('barrios_geom', 'barrios.id_renabap', '=', 'barrios_geom.id_renabap')
+            ->join('localidades', 'barrios.id_loc_t2', '=', 'localidades.id_loc_t2')
+            ->join('departamentos', DB::raw('substr(barrios.id_loc_t2, 1, 5)'), '=', 'departamentos.id_dpto')
+            ->join('provincias', DB::raw('substr(barrios.id_loc_t2, 1, 2)'), '=', 'provincias.id_prov')
+            ->select(
+                'provincias.id_prov as id_provincia',
+                'provincias.nombre as nombre_provincia',
+                'departamentos.id_dpto as id_partido',
+                'departamentos.nombre as nombre_partido',
+                'localidades.id_loc_t2 as id_localidad', 
+                'localidades.nombre as nombre_localidad', 
+                'barrios.id_renabap as id_barrio',
+                'barrios.nombre_barrio',
+                'barrios_geom.geom as geometry')
+            ->orderBy('barrios.id_renabap')
+            ->get();
+        
+        $response['status'] = 'success';
+        $response['result']['codigo'] = 100;
+        $response['result']['detalle']['flag'] = true;
+        $response['result']['detalle']['detalle'] = 'Entidades territoriales obtenidas exitosamente.';
+        $response['result']['detalle']['mensaje'] = null;
+        $response['result']['detalle']['datos']['datos'] = $barrios;
+        $response['result']['detalle']['datos']['provincias'] = Provincia::select('id_prov as id_provincia', 'nombre as nombre_provincia')->orderBy('id_prov')->get();
+
+        return response()->json($response, 200);
+
     }
 
     /**
