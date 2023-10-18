@@ -33,6 +33,7 @@ class BarrioController extends Controller
                 'barrios.id_renabap as id_barrio',
                 'barrios.nombre_barrio',
                 DB::raw('public.ST_AsText(barrios_geom.geom) as geometry'))
+            ->where('barrios.fecha_baja', null)
             ->orderBy('barrios.id_renabap')
             ->get();
         
