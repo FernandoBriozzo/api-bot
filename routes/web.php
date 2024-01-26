@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\novedadesController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +17,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return "Hello World!";
 });
+
+Route::get('/url/{barrio}', [novedadesController::class, 'makeZipBarrios']);
+Route::get('/actualizar', [novedadesController::class, 'actualizarBarrios']);
+Route::get('/actualizar-persona/{barrio}', [novedadesController::class, 'makeZipPersonas']);
+Route::get('/actualizar-personas', [novedadesController::class, 'actualizarPersonas']);

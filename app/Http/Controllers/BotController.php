@@ -21,15 +21,18 @@ class BotController extends Controller
             ], 401);
         }
         $user = User::where('name', $request['name'])->firstOrFail();
-        if ($user['name'] == 'UsuarioBot01') {
-            $scopes = [
-                'bot'
-            ];
-        } else if ($user['name'] == 'UsuarioSalta01') {
-            $scopes = [
-                'salta'
-            ];
+        switch($user['name']) {
+            case 'UsuarioBot01':
+                $scopes = ['bot'];
+                break;
+            case 'UsuarioSalta01':
+                $scopes = ['salta'];
+                break;
+            case 'UsuarioRenaper':
+                $scopes = ['renaper'];
+                break;
         }
+        
         $token = $user->createToken('auth_token', $scopes)->plainTextToken;
         return response()->json([
             'access_token' => $token,

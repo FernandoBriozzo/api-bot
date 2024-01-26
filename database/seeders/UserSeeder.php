@@ -20,12 +20,16 @@ class UserSeeder extends Seeder
         
         DB::table('users')->insert([
             [
-                'name' => "UsuarioBot01",
+                'name' => 'UsuarioBot01',
                 'password' => Hash::make('p3258T974E')
             ],
             [
-                'name' => "UsuarioSalta01",
+                'name' => 'UsuarioSalta01',
                 'password' => Hash::make('RwiVve76LJ')
+            ],
+            [
+                'name' => 'UsuarioRenaper',
+                'password' => Hash::make('r5Ci6F4h2Q')
             ]
         ]);
     }

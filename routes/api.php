@@ -8,6 +8,8 @@ use App\Http\Controllers\BarrioController;
 use App\Http\Controllers\ProvinciaController;
 use App\Http\Controllers\DepartamentoController;
 use App\Http\Controllers\LocalidadController;
+use App\Http\Controllers\novedadesController;
+use App\Http\Controllers\RenaperController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,13 +26,13 @@ Route::middleware('auth:sanctum', 'ability:bot,otrahabilidad')->get('/user', fun
     return $request->user();
 });
 
-Route::group(['prefix' => 'cvf', 'middleware' => ['auth:sanctum', 'ability:bot']], function(){
+Route::group(['prefix' => 'cvf', 'middleware' => ['auth:sanctum', 'ability:bot']], function () {
     Route::post('/datos-persona', [BotController::class, 'obtenerDatosCVF']);
     Route::post('/dni-con-cvf', [BotController::class, 'dniConCvf']);
     Route::post('/dni-sin-cvf', [BotController::class, 'dniSinCvf']);
 });
 
-Route::group(['prefix' => 'mi-pieza', 'middleware' => ['auth:sanctum', 'ability:bot']], function(){
+Route::group(['prefix' => 'mi-pieza', 'middleware' => ['auth:sanctum', 'ability:bot']], function () {
     Route::post('/datos-persona', [PiezaController::class, 'obtenerDatosMiPieza']);
     Route::post('/estado-inscripcion', [PiezaController::class, 'checkInscripcionAbierta']);
     Route::post('/personas-certificado', [PiezaController::class, 'obtenerPersonaConCVF']);
@@ -48,31 +50,42 @@ Route::group(['prefix' => 'mi-pieza', 'middleware' => ['auth:sanctum', 'ability:
 
 Route::post('/login', [BotController::class, 'login']);
 
-Route::group(['prefix' => 'barrios', 'middleware' => ['auth:sanctum', 'ability:salta']], function(){
+Route::group(['prefix' => 'barrios', 'middleware' => ['auth:sanctum', 'ability:salta']], function () {
     Route::get('/', [BarrioController::class, 'index']);
     Route::get('/{id}', [BarrioController::class, 'show']);
-    Route::get('/{id}/geom', [BarrioController::class , 'geometria']);
+    Route::get('/{id}/geom', [BarrioController::class, 'geometria']);
     Route::get('/{id}/ubicacion', [BarrioController::class, 'ubicacion']);
 });
 
-Route::group(['prefix' => 'provincias', 'middleware' => ['auth:sanctum', 'ability:salta']], function(){
+Route::group(['prefix' => 'provincias', 'middleware' => ['auth:sanctum', 'ability:salta']], function () {
     Route::get('/', [ProvinciaController::class, 'index']);
     Route::get('/{id}', [ProvinciaController::class, 'show']);
     Route::get('/{id}/departamentos', [ProvinciaController::class, 'showDepartamentos']);
 });
 
-Route::group(['prefix' => 'departamentos', 'middleware' => ['auth:sanctum', 'ability:salta']], function(){
+Route::group(['prefix' => 'departamentos', 'middleware' => ['auth:sanctum', 'ability:salta']], function () {
     Route::get('/', [DepartamentoController::class, 'index']);
     Route::get('/{id}', [DepartamentoController::class, 'show']);
     Route::get('/{id}/localidades', [DepartamentoController::class, 'showLocalidades']);
 });
 
-Route::group(['prefix' => 'localidades', 'middleware' => ['auth:sanctum', 'ability:salta']], function(){
+Route::group(['prefix' => 'localidades', 'middleware' => ['auth:sanctum', 'ability:salta']], function () {
     Route::get('/', [LocalidadController::class, 'index']);
     Route::get('/{id}', [LocalidadController::class, 'show']);
     Route::get('/{id}/barrios', [LocalidadController::class, 'showBarrios']);
 });
 
-Route::get('/checktokens', function(Request $request){
-    return $request->user()->tokencan('salta');
-})->middleware('auth:sanctum', 'ability:bot,salta');
+Route::group(['prefix' => 'renaper', 'middleware' => ['auth:sanctum', 'ability:renaper']], function () {
+    Route::get('/token-renaper', [RenaperController::class, 'generateToken']);
+    Route::get('/datos-basicos', [RenaperController::class, 'getPerson']);
+});
+
+Route::group(['prefix' => 'zips', 'middleware' => ['auth:sanctum', 'ability:salta']], function () {
+    Route::get('/barrios', [novedadesController::class, 'showBarrios']);
+    Route::get('/personas', [novedadesController::class, 'showPersonas']);
+});
+
+Route::group(['prefix' => 'cronjobs'], function () {
+    Route::get('/zip-barrios', [novedadesController::class, 'actualizarBarrios']);
+    Route::get('/zip-personas', [novedadesController::class, 'actualizarPersonas']);
+});
