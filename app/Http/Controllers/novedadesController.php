@@ -23,7 +23,7 @@ class novedadesController extends Controller
                 $b["Id"] = $barrio->id_renabap;
                 $b["nombre"] = $barrio->nombre_barrio;
                 $b["fecha_actualizacion"] = $barrio->fecha_ultima_actualizacion;
-                $b["url"] = "https://bot.integral.ar/public/zips/barrios/barrio-$barrio->id_renabap.zip";
+                $b["url"] = "https://bot.integral.ar/proyectos/api-bot/public/zips/barrios/barrio-$barrio->id_renabap.zip";
 
                 $response[] = $b;
             }
@@ -40,7 +40,7 @@ class novedadesController extends Controller
         $response = [];
         foreach ($barrios as $barrio) {
             $b["Id"] = $barrio;
-            $b["url"] = "https://bot.integral.ar/public/zips/personas/personas-barrio-$barrio.zip";
+            $b["url"] = "https://bot.integral.ar/proyectos/api-bot/public/zips/personas/personas-barrio-$barrio.zip";
             $response[] = $b;
         }
         return response()->json(
