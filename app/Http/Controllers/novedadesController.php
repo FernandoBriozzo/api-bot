@@ -12,28 +12,30 @@ class novedadesController extends Controller
 {
     public function showBarrios(Request $request)
     {
-        if($request["fecha_hasta"] < $request["fecha_desde"]) {
+        if ($request["fecha_hasta"] < $request["fecha_desde"]) {
             return response()->json([
                 "mensaje" => "La fecha inicial debe ser inferior a la fecha final."
             ], 400);
         } else {
             $barrios = BarrioZip::getBarriosByFecha($request["fecha_desde"], $request["fecha_hasta"]);
             $response = [];
-            foreach($barrios as $barrio) {
+            foreach ($barrios as $barrio) {
                 $b["Id"] = $barrio->id_renabap;
                 $b["nombre"] = $barrio->nombre_barrio;
                 $b["fecha_actualizacion"] = $barrio->fecha_ultima_actualizacion;
                 $b["url"] = "https://bot.integral.ar/public/zips/barrios/barrio-$barrio->id_renabap.zip";
-                
+
                 $response[] = $b;
             }
             return response()->json(
-                $response, 200
+                $response,
+                200
             );
         }
     }
 
-    public function showPersonas() {
+    public function showPersonas()
+    {
         $barrios = PersonaZip::getBarriosNovedades();
         $response = [];
         foreach ($barrios as $barrio) {
@@ -42,7 +44,8 @@ class novedadesController extends Controller
             $response[] = $b;
         }
         return response()->json(
-            $response, 200
+            $response,
+            200
         );
     }
 
@@ -176,8 +179,9 @@ class novedadesController extends Controller
         }
     }
 
-    public function makeZipPersonas(BarrioZip $barrio)
+    public function makeZipPersonas($id)
     {
+        $barrio = BarrioZip::find($id);
         $cvfs = PersonaZip::getCertificadosByBarrio($barrio);
         $personas = [];
         foreach ($cvfs as $cvf) {
@@ -199,22 +203,9 @@ class novedadesController extends Controller
 
     public function actualizarPersonas()
     {
-        $barrios = BarrioZip::all();
+        $barrios = PersonaZip::getBarriosNovedades();
         foreach ($barrios as $barrio) {
-            $fechaActualizacion = PersonaZip::getUltimaFecha($barrio);
-            if (file_exists("./zips/personas/$barrio->id_renabap.txt")) {
-                $filepath = "./zips/personas/$barrio->id_renabap.txt";
-                $filehandler = fopen($filepath, "r");
-                $fecha = fread($filehandler, filesize($filepath));
-                fclose($filehandler);
-                if ($fecha < $fechaActualizacion) {
-                    $this->makeZipPersonas($barrio);
-                } else {
-                    echo "Archivo de personas del barrio: $barrio->nombre_barrio($barrio->id_renabap) no actualizado";
-                }
-            } else {
-                $this->makeZipPersonas($barrio);
-            }
+            $this->makeZipPersonas($barrio);
         }
     }
 }
